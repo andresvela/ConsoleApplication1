@@ -57,25 +57,31 @@ namespace BDOC.MigrationTools
             Arguments CommandLine = new Arguments(args);
 
             findFiles(CommandLine["dir"]);
+            if (CommandLine["single"] != null)
+            {
+                applyFileModification(args);
+            }
+            else
+            {
 
-            Thread thread1 = new Thread(new ParameterizedThreadStart(applyFileModification));
-            Thread thread2 = new Thread(new ParameterizedThreadStart(applyFileModification));
-            Thread thread3 = new Thread(new ParameterizedThreadStart(applyFileModification));
-            Thread thread4 = new Thread(new ParameterizedThreadStart(applyFileModification));
-            Thread thread5 = new Thread(new ParameterizedThreadStart(applyFileModification));
-            Thread thread6 = new Thread(new ParameterizedThreadStart(applyFileModification));
-            Thread thread7 = new Thread(new ParameterizedThreadStart(applyFileModification));
-            Thread thread8 = new Thread(new ParameterizedThreadStart(applyFileModification));
+                Thread thread1 = new Thread(new ParameterizedThreadStart(applyFileModification));
+                Thread thread2 = new Thread(new ParameterizedThreadStart(applyFileModification));
+                Thread thread3 = new Thread(new ParameterizedThreadStart(applyFileModification));
+                Thread thread4 = new Thread(new ParameterizedThreadStart(applyFileModification));
+                Thread thread5 = new Thread(new ParameterizedThreadStart(applyFileModification));
+                Thread thread6 = new Thread(new ParameterizedThreadStart(applyFileModification));
+                Thread thread7 = new Thread(new ParameterizedThreadStart(applyFileModification));
+                Thread thread8 = new Thread(new ParameterizedThreadStart(applyFileModification));
 
-            thread1.Start(args);
-            thread2.Start(args);
-            thread3.Start(args);
-            thread4.Start(args);
-            thread5.Start(args);
-            thread6.Start(args);
-            thread7.Start(args);
-            thread8.Start(args);
-
+                thread1.Start(args);
+                thread2.Start(args);
+                thread3.Start(args);
+                thread4.Start(args);
+                thread5.Start(args);
+                thread6.Start(args);
+                thread7.Start(args);
+                thread8.Start(args);
+            }
                     
 
             return true;
@@ -153,10 +159,18 @@ namespace BDOC.MigrationTools
                             saveFile = saveFile + modifyTABLESV5(ref aDoc);
                         }
 
+                        if (CommandLine["tw"] != null)
+                        {
+                            //modifyTABV5
+                            saveFile = saveFile + modifyTABLESPreferredWidthV5(ref aDoc);
+                        }
+
                         if (CommandLine["e"] != null){
                             //modifyTABV5
                             saveFile = saveFile + modifyInterligneV5(ref aDoc, CommandLine["e"], CommandLine["i"]);
                         }
+
+                        
                         
                      
                     //End treatment-----------------------------
@@ -257,13 +271,29 @@ namespace BDOC.MigrationTools
                 tableNew.AllowAutoFit = false;
                 //indentation a gauche 0
                 tableNew.Rows.LeftIndent = 0;
-
+               
                 logger.Log(aDoc.Name + "|TableLeftIndent| 0 indent.");
                 logger.Log(aDoc.Name + "|TableAutiFit| Autofit in False.");
             }
             return 1;
         }
 
+        private int modifyTABLESPreferredWidthV5(ref Document aDoc)
+        {
+
+            Tables range = aDoc.Content.Tables;
+
+            foreach (Table tableNew in range)
+            {
+                logger.Log(aDoc.Name + "|Tablefound| found.");
+                
+                //colonne taille
+                tableNew.Columns.PreferredWidthType = WdPreferredWidthType.wdPreferredWidthPercent;
+                logger.Log(aDoc.Name + "|PreferredWidthType| pourcentage.");
+
+            }
+            return 1;
+        }
         private int modifyInterligneV5(ref Document aDoc, string type, string lineSpace)
         {
             if (lineSpace == null || lineSpace=="true")

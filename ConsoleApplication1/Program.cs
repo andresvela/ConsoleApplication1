@@ -21,6 +21,7 @@ namespace BDOC.MigrationTools
                 System.Console.WriteLine("-f  : List all font and styles in doc files.");
                 System.Console.WriteLine("-m  : Modify all Styles in doc files.");
                 System.Console.WriteLine("-t  : modify all left indents and autoSize in tables for all doc files.");
+                System.Console.WriteLine("-tw  : modify teh PreferredWidthType to pourcentage for all tables in all doc files.");
                 System.Console.WriteLine("-e type : modify all Inter-line in doc Files with type policy: 1=LineSpaceSingle,2=LineSpace1pt5,3=LineSpaceDouble,4=LineSpaceatLeast,5=LineSpaceExactly,6=LineSpaceMultiple.");
                 System.Console.WriteLine("-i number : Inter-line lineSpace number (necessary for types 4,5,6, if not given default = 10, not necessary for 1,2,3).");               
             }
